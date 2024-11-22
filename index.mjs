@@ -5,6 +5,8 @@ import path from 'path';
 import {readFileSync, writeFileSync} from 'fs';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 import packageJson from './package.json' with {type: "json"};
 
@@ -16,7 +18,11 @@ program
     .action((pathToStatsJsonFile) => {
         try {
             const statsJson = readFileSync(pathToStatsJsonFile, 'utf-8');
-            writeFileSync('./client/assets/stats.json', statsJson);
+            const __filename = fileURLToPath(import.meta.url);
+            const __dirname = dirname(__filename);
+
+            const filePath = join(__dirname, 'client', 'assets', 'stats.json');
+            writeFileSync(filePath, statsJson);
 
             const server = httpServer.createServer({
                 root: './client',
