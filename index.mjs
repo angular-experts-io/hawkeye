@@ -7,6 +7,7 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import open from 'open';
 
 import packageJson from './package.json' with {type: "json"};
 
@@ -25,7 +26,7 @@ program
             writeFileSync(filePath, statsJson);
 
             const server = httpServer.createServer({
-                root: './client',
+                root: join(__dirname, 'client'),
                 cache: -1
             });
 
