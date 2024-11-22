@@ -84,10 +84,10 @@ function logHawkeyeMessage(message, level) {
             console.log(chalk.green(`𓅃: ${message}`));
             break;
         case 'warn':
-            console.warn(chalk.yellow(`𓅃️ ${message}`));
+            console.warn(chalk.yellow(`𓅃️: ${message}`));
             break;
         case 'error':
-            console.error(chalk.red(`𓅃 ${message}`));
+            console.error(chalk.red(`𓅃: ${message}`));
             break;
         default:
             console.log(`𓅃 ${message}`);
