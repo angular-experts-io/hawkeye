@@ -32,5 +32,8 @@
     "commander": "^12.1.0",
     "inquirer": "^12.1.0",
     "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "all-contributors-cli": "^6.26.1"
   }
 }
