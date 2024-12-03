@@ -77,6 +77,10 @@ program.command('init').action(async () => {
         writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(PACKAGE_JSON, null, 2));
         logHawkeyeMessage(`Analyze script successfully added to your package.json`, 'success');
     } catch (error) {
+        if(error.code === 'EISDIR'){
+            logHawkeyeMessage('You specified a path to a directory but Hawkeye expects a path to a stats.json file', 'error');
+        }
+
         logHawkeyeMessage(error, 'error');
     }
 });
