@@ -76,7 +76,7 @@ program.command('init').action(async () => {
         ]);
 
         if(nxWorkspace){
-            const ANALYSE_SCRIPT_NX_WORKSPACE = `"nx build ${projectName} --stats-json --named-chunks && npx -y @angular-experts/hawkeye dist/apps/${projectName}/stats.json"`;
+            const ANALYSE_SCRIPT_NX_WORKSPACE = `nx build ${projectName} --stats-json --named-chunks && npx -y @angular-experts/hawkeye dist/apps/${projectName}/stats.json`;
             PACKAGE_JSON.scripts = {
                 ...PACKAGE_JSON.scripts,
                 [`analyze:${projectName}`]: ANALYSE_SCRIPT_NX_WORKSPACE
