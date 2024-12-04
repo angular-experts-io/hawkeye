@@ -1,6 +1,6 @@
 {
   "name": "@angular-experts/hawkeye",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "CLI to launch Hawkeye, a bundle analyzer / visualizer",
   "main": "index.js",
   "publishConfig": {

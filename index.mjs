@@ -46,14 +46,26 @@ program.command('init').action(async () => {
     try {
         const PACKAGE_JSON_PATH = path.join(process.cwd(), 'package.json');
         const PACKAGE_JSON = JSON.parse(readFileSync(PACKAGE_JSON_PATH, 'utf-8'));
+        let multiProjectWorkspace = false;
 
-        const {multiProjectWorkspace} = await inquirer.prompt([
+        const {nxWorkspace} = await inquirer.prompt([
             {
                 type: 'confirm',
-                name: 'multiProjectWorkspace',
-                message: 'Do you have a multi-project workspace?'
+                name: 'nxWorkspace',
+                message: 'Is this an Nx workspace?'
             }
         ]);
+
+        if(!nxWorkspace) {
+            const multiProjectWorkspaceAnswer = await inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'multiProjectWorkspace',
+                    message: 'Do you have a multi-project Angular CLI workspace?'
+                }
+            ]);
+            multiProjectWorkspace = multiProjectWorkspaceAnswer.multiProjectWorkspace;
+        }
 
         const {projectName} = await inquirer.prompt([
             {
@@ -63,19 +75,29 @@ program.command('init').action(async () => {
             }
         ]);
 
-        if (multiProjectWorkspace) {
-            const ANALYSE_SCRIPT_MULTI_PROJECT_WORKSPACE = `ng build  ${projectName} --stats-json --named-chunks && npx @angular-experts/hawkeye dist/${projectName}/stats.json`;
+        if(nxWorkspace){
+            const ANALYSE_SCRIPT_NX_WORKSPACE = `"analyze:${projectName}": "nx build ${projectName} --stats-json --named-chunks && npx -y @angular-experts/hawkeye dist/apps/${projectName}/stats.json"`;
+            PACKAGE_JSON.scripts = {
+                ...PACKAGE_JSON.scripts,
+                [`analyze:${projectName}`]: ANALYSE_SCRIPT_NX_WORKSPACE
+            };
+        } else if (multiProjectWorkspace) {
+            const ANALYSE_SCRIPT_MULTI_PROJECT_WORKSPACE = `ng build  ${projectName} --stats-json --named-chunks && npx -y @angular-experts/hawkeye dist/${projectName}/stats.json`;
             PACKAGE_JSON.scripts = {
                 ...PACKAGE_JSON.scripts,
                 [`analyze:${projectName}`]: ANALYSE_SCRIPT_MULTI_PROJECT_WORKSPACE
             };
-        } else {
-            const ANALYSE_SCRIPT_SINGLE_PROJECT_WORKSPACE = `ng build --stats-json --named-chunks && npx @angular-experts/hawkeye dist/${projectName}/stats.json`;
+        } else if(!multiProjectWorkspace) {
+            const ANALYSE_SCRIPT_SINGLE_PROJECT_WORKSPACE = `ng build --stats-json --named-chunks && npx -yü @angular-experts/hawkeye dist/${projectName}/stats.json`;
             PACKAGE_JSON.scripts = {...PACKAGE_JSON.scripts, analyze: ANALYSE_SCRIPT_SINGLE_PROJECT_WORKSPACE};
         }
 
         writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(PACKAGE_JSON, null, 2));
-        logHawkeyeMessage(`Analyze script successfully added to your package.json`, 'success');
+
+        const generatedAnalyzeScriptCommand = nxWorkspace || multiProjectWorkspace ? `analyze:${projectName}` : `analyze`;
+
+        logHawkeyeMessage(`Analyze script successfully added to your package.json`);
+        logHawkeyeMessage(`Go ahead and npm run ${generatedAnalyzeScriptCommand}`, 'info');
     } catch (error) {
         if(error.code === 'EISDIR'){
             logHawkeyeMessage('You specified a path to a directory but Hawkeye expects a path to a stats.json file', 'error');

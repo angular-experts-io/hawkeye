@@ -4,7 +4,7 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <div style="display: flex; justify-content: center">
-<img src="./logo.png" alt="drawing" style="width:200px;"/>
+<img src="./logo.png" alt="drawing" style="max-width:200px;"/>
 </div>
 
 ![Preview](./preview.png)
