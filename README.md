@@ -3,9 +3,11 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+<!--
 <div style="display: flex; justify-content: center">
 <img src="./logo.png" alt="drawing" style="max-width:200px;"/>
 </div>
+-->
 
 ![Preview](./preview.png)
 
