@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import httpServer from 'http-server';
-import {program} from 'commander';
+import { program } from 'commander';
 import path from 'path';
-import {readFileSync, writeFileSync} from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { fileURLToPath } from 'url';
@@ -48,7 +48,7 @@ program.command('init').action(async () => {
         const PACKAGE_JSON = JSON.parse(readFileSync(PACKAGE_JSON_PATH, 'utf-8'));
         let multiProjectWorkspace = false;
 
-        const {nxWorkspace} = await inquirer.prompt([
+        const { nxWorkspace } = await inquirer.prompt([
             {
                 type: 'confirm',
                 name: 'nxWorkspace',
@@ -56,7 +56,7 @@ program.command('init').action(async () => {
             }
         ]);
 
-        if(!nxWorkspace) {
+        if (!nxWorkspace) {
             const multiProjectWorkspaceAnswer = await inquirer.prompt([
                 {
                     type: 'confirm',
@@ -67,7 +67,7 @@ program.command('init').action(async () => {
             multiProjectWorkspace = multiProjectWorkspaceAnswer.multiProjectWorkspace;
         }
 
-        const {projectName} = await inquirer.prompt([
+        const { projectName } = await inquirer.prompt([
             {
                 type: 'input',
                 name: 'projectName',
@@ -75,7 +75,7 @@ program.command('init').action(async () => {
             }
         ]);
 
-        if(nxWorkspace){
+        if (nxWorkspace) {
             const ANALYSE_SCRIPT_NX_WORKSPACE = `nx build ${projectName} --stats-json --named-chunks && npx -y @angular-experts/hawkeye dist/apps/${projectName}/stats.json`;
             PACKAGE_JSON.scripts = {
                 ...PACKAGE_JSON.scripts,
@@ -87,9 +87,12 @@ program.command('init').action(async () => {
                 ...PACKAGE_JSON.scripts,
                 [`analyze:${projectName}`]: ANALYSE_SCRIPT_MULTI_PROJECT_WORKSPACE
             };
-        } else if(!multiProjectWorkspace) {
+        } else {
             const ANALYSE_SCRIPT_SINGLE_PROJECT_WORKSPACE = `ng build --stats-json --named-chunks && npx -yü @angular-experts/hawkeye dist/${projectName}/stats.json`;
-            PACKAGE_JSON.scripts = {...PACKAGE_JSON.scripts, analyze: ANALYSE_SCRIPT_SINGLE_PROJECT_WORKSPACE};
+            PACKAGE_JSON.scripts = {
+                ...PACKAGE_JSON.scripts,
+                analyze: ANALYSE_SCRIPT_SINGLE_PROJECT_WORKSPACE
+            };
         }
 
         writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(PACKAGE_JSON, null, 2));
@@ -99,17 +102,18 @@ program.command('init').action(async () => {
         logHawkeyeMessage(`Analyze script successfully added to your package.json`, 'success');
         logHawkeyeMessage(`Go ahead and npm run ${generatedAnalyzeScriptCommand}`, 'info');
     } catch (error) {
-        if(error.code === 'EISDIR'){
+        if (error.code === 'EISDIR') {
             logHawkeyeMessage('You specified a path to a directory but Hawkeye expects a path to a stats.json file', 'error');
         }
 
         logHawkeyeMessage(error, 'error');
     }
 });
+
 program.parse();
 
 function logHawkeyeMessage(message, level) {
-    switch(level) {
+    switch (level) {
         case 'info':
             console.log(chalk.blue(`𓅃: ${message}`));
             break;
