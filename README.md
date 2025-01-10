@@ -41,16 +41,25 @@ Simply run the following command and answer the questions from the wizard:
 npx @angular-experts/hawkeye init
 ```
 
+## Analyze Your Bundle with Hawkeye
+
 From here on you can run the following commands to analyze your project:
 ```bash
 npm run analyze
 ```
 
+How it works:
+
+1. Generating build stats: It builds the project and creates a stats.json file containing information about the bundled output. You'll find this file in your project's output directory (usually ./dist).
+2. Launching an analysis server: A server starts at http://localhost:1420. 
+
+Open it in your browser and upload the stats.json file to see a visual representation of your bundle's contents.
+
 ## Running the analyzer directly
 
-If you prefer to run the analyzer directly, you can do so by running the following command:
+If you already have a stats.json and like to run the analyzer directly on it, you can do so by running the following command:
 ```bash
-npx @angular-experts/hawkeye 
+npx @angular-experts/hawkeye <pathToStatsJsonFile>
 ```
 
 ## Version
