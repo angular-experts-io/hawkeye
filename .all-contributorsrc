@@ -1,6 +1,6 @@
 {
-  "projectName": "Hawkeye",
-  "projectOwner": "Nivek",
+  "projectName": "hawkeye",
+  "projectOwner": "angular-experts-io",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -18,8 +18,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "timonkrebs",
+      "name": "Timon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11026852?v=4",
+      "profile": "https://github.com/timonkrebs",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "linkToUsage": true
+  "linkToUsage": true,
+  "commitType": "docs"
 }
